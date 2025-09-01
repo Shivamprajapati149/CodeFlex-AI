@@ -11,8 +11,8 @@ import { useEffect, useRef, useState } from "react";
 
 // 1. Message type define करें
 type ChatMessage = {
+  role: "user" | "assistant";
   content: string;
-  role: "assistant" | "user";
 };
 
 // 2. Vapi message event type (adjust if API returns more fields)
@@ -108,12 +108,14 @@ const [messages, setMessages] = useState<ChatMessage[]>([]);
    const handleMessage = (message: VapiMessage) => {
   if (message.type === "transcript" && message.transcriptType === "final") {
     const newMessage: ChatMessage = {
-      content: message.transcript,
+     content: message.transcript as string,
+
       role: message.role === "user" ? "user" : "assistant", // mapping
     };
     setMessages((prev) => [...prev, newMessage]);
   }
 };
+
 
 
 
