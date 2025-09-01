@@ -4,7 +4,7 @@ import { Button } from "@/Components/ui/button";
 import { Card } from "@/Components/ui/card";
 import { vapi } from "@/lib/vapi";
 import { useUser } from "@clerk/nextjs";
-import Vapi from "@vapi-ai/web";
+
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -104,7 +104,7 @@ const [messages, setMessages] = useState<ChatMessage[]>([]);
       console.log("AI stopped Speaking");
       setIsSpeaking(false);
     };
-    
+
    const handleMessage = (message: VapiMessage) => {
   if (message.type === "transcript" && message.transcriptType === "final") {
     const newMessage: ChatMessage = {
@@ -114,6 +114,7 @@ const [messages, setMessages] = useState<ChatMessage[]>([]);
     setMessages((prev) => [...prev, newMessage]);
   }
 };
+
 
 
     const handleError = (error: unknown) => {
