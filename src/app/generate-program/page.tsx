@@ -4,8 +4,24 @@ import { Button } from "@/Components/ui/button";
 import { Card } from "@/Components/ui/card";
 import { vapi } from "@/lib/vapi";
 import { useUser } from "@clerk/nextjs";
+import Vapi from "@vapi-ai/web";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+
+// 1. Message type define करें
+type ChatMessage = {
+  content: string;
+  role: "assistant" | "user";
+};
+
+// 2. Vapi message event type (adjust if API returns more fields)
+type VapiMessage = {
+  type: string;
+  transcriptType?: string;
+  transcript?: string;
+  role?: "assistant" | "user";
+};
 
 const GenerateProgramPage = () => {
   const [callActive, setCallActive] = useState(false);
@@ -87,14 +103,14 @@ const GenerateProgramPage = () => {
       console.log("AI stopped Speaking");
       setIsSpeaking(false);
     };
-    const handleMessage = (message: any) => {
+    const handleMessage = (message: VapiMessage) => {
       if (message.type === "transcript" && message.transcriptType === "final") {
         const newMessage = { content: message.transcript, role: message.role };
         setMessages((prev) => [...prev, newMessage]);
       }
     };
 
-    const handleError = (error: any) => {
+    const handleError = (error: unknown) => {
       console.log("Vapi Error", error);
       setConnecting(false);
       setCallActive(false);
@@ -197,9 +213,10 @@ const GenerateProgramPage = () => {
 
                 <div className="relative w-full h-full rounded-full bg-card flex items-center justify-center border border-border overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-secondary/10"></div>
-                  <img
-                    src="assests/ai-avatar.png"
+                  <Image
+                    src="/assests/ai-avatar.png"
                     alt="AI Assistant"
+                    fill
                     className="w-full h-full object-cover"
                   />
                 </div>
